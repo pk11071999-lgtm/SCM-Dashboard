@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#7a4a1e">
+<title>Shri Chitrapur Math — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2b2118; --ink-soft:#6b5d4d; --ink-faint:#9a8a76;
+    --paper:#f6f0e6; --card:#fffdf8; --line:#e4d8c5;
+    --saffron:#b5651d; --saffron-deep:#7a4a1e; --saffron-soft:#f3e4d0;
+    --green:#4a6b3a; --green-soft:#e4ecd9;
+    --amber:#9a6a18; --amber-soft:#f6e8cc;
+    --red:#9a3b2c; --red-soft:#f3dcd6;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Newsreader',Georgia,serif; color:var(--ink);
+    background:var(--paper);
+    background-image:radial-gradient(circle at 20% 0%, #faf4ea 0%, transparent 55%),
+                     radial-gradient(circle at 90% 100%, #f1e8d8 0%, transparent 50%);
+    min-height:100vh; line-height:1.6; font-size:17px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:22px 18px 60px}
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif; font-weight:500; letter-spacing:-0.01em; line-height:1.2}
+
+  /* ---- Login ---- */
+  #login{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px}
+  .login-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:42px 34px; max-width:420px; width:100%; text-align:center;
+    box-shadow:0 8px 40px rgba(122,74,30,0.08);
+  }
+  .om{font-size:38px; color:var(--saffron); margin-bottom:8px; font-family:'Fraunces',serif}
+  .login-card h1{font-size:25px; margin-bottom:4px; color:var(--saffron-deep)}
+  .login-card p{color:var(--ink-soft); font-size:15px; margin-bottom:26px}
+  input,select,textarea{
+    font-family:'Newsreader',serif; font-size:16px; width:100%;
+    padding:12px 14px; border:1px solid var(--line); border-radius:10px;
+    background:#fffefb; color:var(--ink); outline:none;
+  }
+  input:focus,select:focus,textarea:focus{border-color:var(--saffron); box-shadow:0 0 0 3px var(--saffron-soft)}
+  button{
+    font-family:'Fraunces',serif; font-size:16px; font-weight:500; cursor:pointer;
+    border:none; border-radius:10px; padding:12px 20px;
+    background:var(--saffron-deep); color:#fff; transition:transform .08s, background .2s;
+  }
+  button:hover{background:var(--saffron)}
+  button:active{transform:scale(0.98)}
+  button.ghost{background:transparent; color:var(--saffron-deep); border:1px solid var(--line)}
+  button.ghost:hover{background:var(--saffron-soft)}
+  .login-card button{width:100%; margin-top:14px}
+  .err{color:var(--red); font-size:14px; margin-top:12px; min-height:18px}
+
+  /* ---- Header ---- */
+  header{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:8px}
+  header .title h1{font-size:24px; color:var(--saffron-deep)}
+  header .title p{font-size:13px; color:var(--ink-faint)}
+  .live{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--green);
+        background:var(--green-soft); padding:5px 11px; border-radius:20px; font-family:'Fraunces',serif}
+  .live .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .toprow{display:flex; gap:8px; align-items:center}
+  .iconbtn{background:transparent;border:1px solid var(--line);color:var(--ink-soft);padding:8px 12px;font-size:14px}
+  .iconbtn:hover{background:var(--saffron-soft);color:var(--saffron-deep)}
+
+  /* ---- Sections ---- */
+  section{margin-top:26px}
+  .sec-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--line)}
+  .sec-head h2{font-size:19px}
+  .sec-head .add{font-family:'Fraunces',serif; font-size:14px; color:var(--saffron-deep); cursor:pointer; background:none; border:none; padding:4px 8px}
+  .sec-head .add:hover{color:var(--saffron); background:none}
+
+  /* HH section — set apart with reverence */
+  .hh{
+    background:linear-gradient(180deg,#fdf6ea,#fbf0df);
+    border:1px solid #ecd9b8; border-radius:var(--radius);
+    padding:18px 20px 8px; box-shadow:0 4px 24px rgba(181,101,29,0.07);
+  }
+  .hh .sec-head{border-bottom:1px solid #ecd9b8}
+  .hh .sec-head h2{color:var(--saffron-deep); display:flex; align-items:center; gap:9px}
+  .hh-mark{font-size:15px; color:var(--saffron)}
+  .hh-note{font-size:12.5px; color:var(--ink-faint); font-style:italic; margin:-4px 0 12px}
+
+  .item{
+    background:var(--card); border:1px solid var(--line); border-radius:11px;
+    padding:13px 15px; margin-bottom:9px; display:flex; gap:12px; align-items:flex-start;
+  }
+  .hh .item{background:#fffdf9; border-color:#eaddc4}
+  .item .body{flex:1; min-width:0}
+  .item .body .t{font-size:16.5px; color:var(--ink); font-weight:400}
+  .item .body .d{font-size:13.5px; color:var(--ink-soft); margin-top:2px}
+  .item .meta{display:flex; gap:7px; align-items:center; flex-wrap:wrap; margin-top:6px}
+  .pill{font-family:'Fraunces',serif; font-size:11.5px; padding:3px 9px; border-radius:20px; white-space:nowrap}
+  .pill.date{background:var(--saffron-soft); color:var(--saffron-deep)}
+  .pill.high{background:var(--red-soft); color:var(--red)}
+  .pill.assignee{background:#eee5d6; color:var(--ink-soft)}
+  .pill.pending{background:var(--amber-soft); color:var(--amber)}
+  .pill.approved{background:var(--green-soft); color:var(--green)}
+  .pill.where{background:#e7ecdf; color:var(--green)}
+  .empty{color:var(--ink-faint); font-style:italic; font-size:14.5px; padding:8px 2px}
+
+  /* ---- Modal ---- */
+  #modal-bg{display:none; position:fixed; inset:0; background:rgba(43,33,24,0.45);
+            align-items:flex-end; justify-content:center; z-index:50; padding:0}
+  #modal-bg.on{display:flex}
+  .modal{
+    background:var(--card); width:100%; max-width:520px; border-radius:18px 18px 0 0;
+    padding:24px 22px calc(24px + env(safe-area-inset-bottom)); max-height:90vh; overflow-y:auto;
+    animation:slideup .25s ease;
+  }
+  @media(min-width:560px){#modal-bg{align-items:center} .modal{border-radius:18px; animation:popin .2s ease}}
+  @keyframes slideup{from{transform:translateY(40px);opacity:.6}to{transform:translateY(0);opacity:1}}
+  @keyframes popin{from{transform:scale(.97);opacity:.6}to{transform:scale(1);opacity:1}}
+  .modal h3{font-size:20px; color:var(--saffron-deep); margin-bottom:16px}
+  .field{margin-bottom:13px}
+  .field label{display:block; font-family:'Fraunces',serif; font-size:13px; color:var(--ink-soft); margin-bottom:5px}
+  .modal .actions{display:flex; gap:10px; margin-top:8px}
+  .modal .actions button{flex:1}
+
+  .loading{text-align:center; padding:50px 0; color:var(--ink-faint); font-style:italic}
+  .install-tip{margin-top:30px; font-size:13px; color:var(--ink-faint); text-align:center; line-height:1.7}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="login">
+  <div class="login-card">
+    <div class="om">ॐ</div>
+    <h1>Shri Chitrapur Math</h1>
+    <p>Operations dashboard</p>
+    <input type="password" id="code" placeholder="Enter access code" autocomplete="off"
+           onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Enter</button>
+    <div class="err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div class="wrap" id="dash" style="display:none">
+  <header>
+    <div class="title">
+      <h1>Operations</h1>
+      <p id="greeting">Loading…</p>
+    </div>
+    <div class="toprow">
+      <span class="live"><span class="dot"></span> Live</span>
+      <button class="iconbtn" onclick="loadData()" title="Refresh">↻</button>
+      <button class="iconbtn" onclick="logout()" title="Lock">Lock</button>
+    </div>
+  </header>
+
+  <div id="content"><div class="loading">Loading…</div></div>
+
+  <div class="install-tip">
+    Tip: open the menu in your browser and choose “Add to Home Screen” to use this like an app.
+  </div>
+</div>
+
+<!-- ============ ADD MODAL ============ -->
+<div id="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modalTitle">Add</h3>
+    <div id="modalFields"></div>
+    <div class="actions">
+      <button class="ghost" onclick="closeModal()">Cancel</button>
+      <button onclick="submitAdd()">Save</button>
+    </div>
+    <div class="err" id="modalErr"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ====================================================================
+   STEP 1 — PASTE YOUR SUPABASE DETAILS HERE
+   - SUPABASE_URL  : your Project URL (safe to put here)
+   - SUPABASE_ANON : your anon / public key (the SAFE one — NOT service_role)
+   ==================================================================== */
+const SUPABASE_URL  = "https://vchafdroyfbkmpnzneoz.supabase.co";
+const SUPABASE_ANON  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjaGFmZHJveWZia21wbnpuZW96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMDE4NjEsImV4cCI6MjA5NTc3Nzg2MX0.j1I5Bx9NN9oZ0-91SiIHcq38Msdx_xjXr0FtyQYHtMM";
+/* ==================================================================== */
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+let CODE = null;                 // held only in memory for the session
+let REFRESH_TIMER = null;
+
+/* ---------- Login ---------- */
+async function doLogin(){
+  const code = document.getElementById('code').value.trim();
+  const err = document.getElementById('loginErr');
+  err.textContent = '';
+  if(!code){ err.textContent='Please enter the code.'; return; }
+
+  const { data, error } = await sb.rpc('get_dashboard_data', { code });
+  if(error){ err.textContent='Connection problem. Check your internet.'; return; }
+  if(data && data.error === 'invalid_code'){ err.textContent='Incorrect code.'; return; }
+
+  CODE = code;
+  document.getElementById('login').style.display='none';
+  document.getElementById('dash').style.display='block';
+  render(data);
+  startLiveRefresh();
+}
+
+function logout(){
+  CODE = null;
+  if(REFRESH_TIMER) clearInterval(REFRESH_TIMER);
+  document.getElementById('code').value='';
+  document.getElementById('dash').style.display='none';
+  document.getElementById('login').style.display='flex';
+}
+
+/* ---------- Live refresh (poll every 20s) ---------- */
+function startLiveRefresh(){
+  if(REFRESH_TIMER) clearInterval(REFRESH_TIMER);
+  REFRESH_TIMER = setInterval(loadData, 20000);
+}
+async function loadData(){
+  if(!CODE) return;
+  const { data, error } = await sb.rpc('get_dashboard_data', { code: CODE });
+  if(error || (data && data.error)) return;
+  render(data);
+}
+
+/* ---------- Rendering ---------- */
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function fmtDate(d){ if(!d) return ''; const x=new Date(d); if(isNaN(x)) return ''; return x.toLocaleDateString('en-IN',{day:'numeric',month:'short'}); }
+function fmtDateTime(d){ if(!d) return ''; const x=new Date(d); if(isNaN(x)) return ''; return x.toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}); }
+
+function render(data){
+  const tasks = data.tasks||[], events=data.events||[], docs=data.documents||[];
+  const hh = tasks.filter(t=>t.category==='hh');
+  const gen = tasks.filter(t=>t.category!=='hh');
+
+  document.getElementById('greeting').textContent =
+    new Date().toLocaleDateString('en-IN',{weekday:'long', day:'numeric', month:'long'});
+
+  let html = '';
+
+  // --- HH Tasks ---
+  html += `<section class="hh">
+    <div class="sec-head">
+      <h2><span class="hh-mark">✦</span> HH Tasks</h2>
+      <button class="add" onclick="openAdd('hh')">+ Add</button>
+    </div>
+    <p class="hh-note">Maintained with reverence by the Manager.</p>`;
+  html += hh.length ? hh.map(taskItem).join('') : `<div class="empty">No HH tasks yet.</div>`;
+  html += `</section>`;
+
+  // --- General Tasks ---
+  html += section('General tasks', 'task',
+    gen.length ? gen.map(taskItem).join('') : `<div class="empty">No tasks yet.</div>`);
+
+  // --- Events ---
+  html += section('Events', 'event',
+    events.length ? events.map(eventItem).join('') : `<div class="empty">No upcoming events.</div>`);
+
+  // --- Documents ---
+  html += section('Documents & approvals', 'document',
+    docs.length ? docs.map(docItem).join('') : `<div class="empty">No documents yet.</div>`);
+
+  document.getElementById('content').innerHTML = html;
+}
+
+function section(title, type, inner){
+  return `<section>
+    <div class="sec-head">
+      <h2>${esc(title)}</h2>
+      <button class="add" onclick="openAdd('${type}')">+ Add</button>
+    </div>${inner}</section>`;
+}
+
+function taskItem(t){
+  let meta='';
+  if(t.due_date) meta+=`<span class="pill date">${fmtDate(t.due_date)}</span>`;
+  if(t.priority==='high') meta+=`<span class="pill high">High</span>`;
+  if(t.assigned_to) meta+=`<span class="pill assignee">${esc(t.assigned_to)}</span>`;
+  return `<div class="item"><div class="body">
+    <div class="t">${esc(t.title)}</div>
+    ${t.description?`<div class="d">${esc(t.description)}</div>`:''}
+    ${meta?`<div class="meta">${meta}</div>`:''}
+  </div></div>`;
+}
+function eventItem(e){
+  return `<div class="item"><div class="body">
+    <div class="t">${esc(e.title)}</div>
+    <div class="meta">
+      ${e.event_time?`<span class="pill date">${fmtDateTime(e.event_time)}</span>`:''}
+      ${e.location?`<span class="pill where">${esc(e.location)}</span>`:''}
+    </div>
+    ${e.notes?`<div class="d" style="margin-top:6px">${esc(e.notes)}</div>`:''}
+  </div></div>`;
+}
+function docItem(d){
+  const cls = d.status==='approved'?'approved':'pending';
+  const label = d.status==='approved'?'Approved':'Pending';
+  return `<div class="item"><div class="body">
+    <div class="t">${esc(d.title)}</div>
+    <div class="meta">
+      <span class="pill ${cls}">${label}</span>
+      ${d.approved_by?`<span class="pill assignee">by ${esc(d.approved_by)}</span>`:''}
+    </div>
+    ${d.note?`<div class="d" style="margin-top:6px">${esc(d.note)}</div>`:''}
+  </div></div>`;
+}
+
+/* ---------- Add modal ---------- */
+let currentAdd = null;
+const FORMS = {
+  hh:    {title:'Add HH task', fields:[['title','Title','text'],['description','Detail','text'],['due_date','Due date','date'],['priority','Priority','priority']]},
+  task:  {title:'Add task', fields:[['title','Title','text'],['description','Detail','text'],['due_date','Due date','date'],['priority','Priority','priority'],['assigned_to','Assigned to','text']]},
+  event: {title:'Add event', fields:[['title','Title','text'],['event_time','Date & time','datetime-local'],['location','Location','text'],['notes','Notes','text']]},
+  document:{title:'Add document', fields:[['title','Title','text'],['status','Status','status'],['note','Note','text'],['approved_by','Approved by','text']]},
+};
+
+function openAdd(type){
+  currentAdd = type;
+  const f = FORMS[type];
+  document.getElementById('modalTitle').textContent = f.title;
+  document.getElementById('modalErr').textContent = '';
+  document.getElementById('modalFields').innerHTML = f.fields.map(([k,lbl,kind])=>{
+    let input;
+    if(kind==='priority') input=`<select id="f_${k}"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select>`;
+    else if(kind==='status') input=`<select id="f_${k}"><option value="pending">Pending</option><option value="approved">Approved</option></select>`;
+    else input=`<input id="f_${k}" type="${kind}">`;
+    return `<div class="field"><label>${lbl}</label>${input}</div>`;
+  }).join('');
+  document.getElementById('modal-bg').classList.add('on');
+}
+function closeModal(){ document.getElementById('modal-bg').classList.remove('on'); }
+
+async function submitAdd(){
+  const type = currentAdd;
+  const err = document.getElementById('modalErr');
+  err.textContent='';
+  const val = k => { const el=document.getElementById('f_'+k); return el?el.value.trim():null; };
+
+  if(!val('title')){ err.textContent='Title is required.'; return; }
+
+  let rpcName, params;
+  if(type==='hh' || type==='task'){
+    rpcName='add_task';
+    params={ code:CODE, p_title:val('title'), p_description:val('description')||null,
+             p_due_date:val('due_date')||null, p_priority:val('priority')||'normal',
+             p_category: type==='hh'?'hh':'general', p_assigned_to:val('assigned_to')||null };
+  } else if(type==='event'){
+    rpcName='add_event';
+    params={ code:CODE, p_title:val('title'), p_event_time:val('event_time')||null,
+             p_location:val('location')||null, p_notes:val('notes')||null };
+  } else {
+    rpcName='add_document';
+    params={ code:CODE, p_title:val('title'), p_status:val('status')||'pending',
+             p_note:val('note')||null, p_approved_by:val('approved_by')||null };
+  }
+
+  const { data, error } = await sb.rpc(rpcName, params);
+  if(error){ err.textContent='Could not save. Check connection.'; return; }
+  if(data && data.error==='invalid_code'){ err.textContent='Session expired — please lock and re-enter the code.'; return; }
+  closeModal();
+  loadData();
+}
+</script>
+</body>
+</html>
