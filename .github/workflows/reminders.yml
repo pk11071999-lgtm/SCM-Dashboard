@@ -1,0 +1,29 @@
+name: Send dashboard reminders
+ 
+on:
+  schedule:
+    # Times are in UTC. IST = UTC + 5:30
+    - cron: '30 2 * * *'    # 08:00 IST
+    - cron: '30 7 * * *'    # 13:00 IST
+    - cron: '30 13 * * *'   # 19:00 IST
+  workflow_dispatch:        # lets you run it manually to test
+ 
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+ 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+ 
+      - name: Send reminders
+        env:
+          SUPABASE_ANON: ${{ secrets.SUPABASE_ANON }}
+          ACCESS_CODE: ${{ secrets.ACCESS_CODE }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
+        run: python send_reminders.py
